@@ -111,6 +111,21 @@ module.exports = function (opts) {
     that.send(q, rinfo, cb)
   }
 
+  /*Mdns probe */
+  that.probe = function(q, type, authorities, cb){
+    //Lets assume this is the only way to call this function
+    if (typeof q === 'string') q = [{name: q, type: type || 'ANY'}]
+    if (Array.isArray(q)) q = {type: 'query', questions: q}
+
+    q.type = 'query'
+
+    //Authorities
+    q.authorities = authorities;
+
+    that.send(q, null, cb);
+  }
+  /**/
+
   that.destroy = function (cb) {
     if (!cb) cb = noop
     if (destroyed) return process.nextTick(cb)
